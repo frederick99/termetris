@@ -1,3 +1,3 @@
-gcc -o main.c -c main.c
-gcc -o main main.o -lncurses
+gcc -o main.o -c main.c
+gcc -o main main.o -lncursesw
 rm -f main.o

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 
 
@@ -59,19 +58,18 @@ void getCoords(struct Block *block, int res[4][2]) {
   }
 }
 
-struct Block get_block() {
+void get_block(struct Block *block) {
   int k = rand() % 7;
-  struct Block block = {0};
-  block.type = k;
-  block.y = 0;
-  //block.cells = kinds[i];
+  // struct Block block = {0};
+  block->type = k;
+  block->y = 0;
+  //block->cells = kinds[i];
   for(int i=0;i<4;i++){
-    block.cells[i][0] = kinds[k][i][0];
-    block.cells[i][1] = kinds[k][i][1];
+    block->cells[i][0] = kinds[k][i][0];
+    block->cells[i][1] = kinds[k][i][1];
   }
-  block.orientation = rand() % 4;
-  getcood(&block);
-  return block;
+  block->orientation = rand() % 4;
+  getcood(block);
 }
 
 
@@ -94,9 +92,20 @@ int max_x_cood(struct Block* block){
     return temp;
 }
 
-void Dmain() {
-  struct Block b = get_block();
-  printf("%d %d\n", b.type, b.orientation);
-  for (int i = 0; i < 4; i++)
-    printf("%d %d\n", b.cells[i][0], b.cells[i][1]);
-};
+int min_y_cood(struct Block* block){
+  int temp  = 1000;
+    for(int i=0;i<4;i++){
+      if(temp>block->cells[i][1])
+        temp = block->cells[i][1];
+    }
+    return temp;
+}
+
+int max_y_cood(struct Block* block){
+  int temp  = -1000;
+    for(int i=0;i<4;i++){
+      if(temp<block->cells[i][1])
+        temp = block->cells[i][1];
+    }
+    return temp;
+}
