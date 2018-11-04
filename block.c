@@ -52,19 +52,25 @@ void getcood(struct Block* block){
   }
 }
 
+void getCoords(struct Block *block, int res[4][2]) {
+  for (int i = 0; i < 4; i++) {
+    res[i][0] = block->cells[i][0] + block->x;
+    res[i][1] = block->cells[i][1] + block->y;
+  }
+}
+
 struct Block get_block() {
   int k = rand() % 7;
   struct Block block = {0};
   block.type = k;
+  block.y = 0;
   //block.cells = kinds[i];
   for(int i=0;i<4;i++){
     block.cells[i][0] = kinds[k][i][0];
     block.cells[i][1] = kinds[k][i][1];
   }
   block.orientation = rand() % 4;
-  display_coods(&block);
   getcood(&block);
-  display_coods(&block);
   return block;
 }
 
@@ -89,7 +95,6 @@ int max_x_cood(struct Block* block){
 }
 
 void Dmain() {
-  srand(time(0));
   struct Block b = get_block();
   printf("%d %d\n", b.type, b.orientation);
   for (int i = 0; i < 4; i++)
