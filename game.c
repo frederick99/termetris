@@ -1,4 +1,3 @@
-#include <ncurses.h>
 #include <time.h>
 #include "block.c"
 
@@ -7,19 +6,25 @@ int NEW_BLOCK = 0;
 
 void rotateblock(struct Block* block, int direction){
   if(direction==1){
-    for(int i=0;i<4;i++){
+    for(int i=0;i<4;i++) {
       int temp  = block->cells[i][0];
       block->cells[i][0] = block->cells[i][1];
       block->cells[i][1] = -1*temp;
     }
   }
-  else if(direction==-1){
-    for(int i=0;i<4;i++){
+  else if(direction==-1) {
+    for(int i=0;i<4;i++) {
       int temp  = block->cells[i][0];
       block->cells[i][0] = -1*block->cells[i][1];
       block->cells[i][1] = temp;
     }
   }
+}
+
+void slam_down(int grid[20][16], struct Block *block) {
+  // while can go down
+  // go down
+  while (move_down() != -1);
 }
 
 void insert_in_grid(int grid[20][16],struct Block* block){
@@ -71,14 +76,15 @@ void print_grid(int grid[20][16]){
   }
 }
 
-int main(int argc, char const *argv[])
-{  srand(time(0));
+int Bmain(int argc, char const *argv[])
+{
+  srand(time(0));
   int grid[20][16] ;
   for(int i=0;i<20;i++){
     for(int j=0;j<16;j++){
-    grid[i][j] = 0;
+      grid[i][j] = 0;
+    }
   }
-}
   int count = 1;
   NEW_BLOCK = 1;
   while(count) {

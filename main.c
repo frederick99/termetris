@@ -3,6 +3,8 @@
 #include <locale.h>
 #include <time.h>
 
+#include "game.c"
+
 int startx, starty, width, height, scaling;
 
 WINDOW *create_newwin(int height, int width, int starty, int startx);
@@ -26,9 +28,9 @@ void drawGrid(int grid[20][16], WINDOW *win) {
 }
 
 int main(int argc, char *argv[])
-{	WINDOW *my_win;
+{
+	WINDOW *my_win;
 	int ch;
-
 	initscr();			/* Start curses mode 		*/
 	cbreak();			/* Line buffering disabled, Pass on*
 						 * everty thing to me 		*/
@@ -37,31 +39,31 @@ int main(int argc, char *argv[])
 	halfdelay(1);
 
 	scaling = LINES / 20;
-
 	height = 20 * scaling;
 	width = 32 * scaling;
 	starty = (LINES - height - 2) / 2;	/* Calculating for a center placement */
 	startx = (COLS - width - 2) / 2;	/* of the window		*/
 	setlocale(LC_ALL, "");
-	// printw("%lc",(wint_t) 9608);
-	refresh();
 	my_win = create_newwin(height+2, width+2, starty, startx);
-	// wmove(my_win,startx+1,starty+2);
 	refresh();
+
+	srand(time(0));
+  int grid[20][16] = {0};
+  NEW_BLOCK = 1;
+	struct Block *block;
 
 	int t0 = time(0);
-
 	int x = 0, y = 0;
-	fill(x,y,my_win);
-	wrefresh(my_win);
-	while((ch = getch()) != 'q')
-	{
+	drawGrid(grid, my_win);
+	// fill(x,y,my_win);
+	// wrefresh(my_win);
+	while((ch = getch()) != 'q') {
 		int doRefresh = 1;
 		switch(ch) {
-			case KEY_LEFT: if (x>0) x--; break;
-			case KEY_RIGHT: if (x<15) x++; break;
-			case KEY_UP: if (y>0) y--; break;
-			case KEY_DOWN: if (y<19) y++; break;
+			case KEY_LEFT: move_lr(grid, block, -1); break;
+			case KEY_RIGHT: move_lr(grid, block, 1); break;
+			case KEY_UP: rotateblock(block, 1); break;
+			case KEY_DOWN: slam_down(grid, block); break;
 			case ERR: {
 				int t = time(0);
 				int dt = t - t0;
@@ -70,15 +72,17 @@ int main(int argc, char *argv[])
 					doRefresh = 0;
 				} else {
 					t0++;
-					if (y<19) y++;
+					// if (y<19) y++;
+					step(grid, block) ;
 				}
 			}
 		}
 		if (doRefresh) {
-			wclear(my_win);
-			fill(x,y,my_win);
-			box(my_win, 0, 0);
-			wrefresh(my_win);
+			// wclear(my_win);
+			// fill(x,y,my_win);
+			// box(my_win, 0, 0);
+			// wrefresh(my_win);
+			drawGrid(grid, my_win);
 		}
 	}
 		
@@ -88,7 +92,8 @@ int main(int argc, char *argv[])
 
 
 WINDOW *create_newwin(int height, int width, int starty, int startx)
-{	WINDOW *local_win;
+{
+	WINDOW *local_win;
 
 	local_win = newwin(height, width, starty, startx);
 	box(local_win, 0 , 0);		/* 0, 0 gives default characters 
@@ -97,11 +102,6 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 	wrefresh(local_win);		/* Show that box 		*/
 
 	return local_win;
-}
-
-void printCharWindow(){
-	//int wmove(WINDOW *win, int y, int x);
-	return;
 }
 
 void destroy_win(WINDOW *local_win)

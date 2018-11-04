@@ -2,3 +2,5 @@
 .vscode/
 .gitgnore
 Makefile
+main
+main.o
