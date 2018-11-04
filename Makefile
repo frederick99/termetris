@@ -6,10 +6,10 @@ CC=gcc
 LIBS=-lncurses
 
 SRC_DIR=.
-EXE_DIR=./bin
+EXE_DIR=.
 
 EXES = \
-    ./main
+    ${EXE_DIR}/main
 
 ${EXE_DIR}/%: %.o
 	${CC} -o $@ $< ${LIBS}
