@@ -21,8 +21,6 @@ void rotateblock(struct Block* block,int direction){
   }
 }
 
-void insert_in_grind(grid)
-
 int main(int argc, char const *argv[])
 {
   // initscr();
@@ -32,7 +30,7 @@ int main(int argc, char const *argv[])
   // endwin();
   int grid[20][16] ={0} ;
   int count = 1;
-  while(count){
+  while(count) {
     struct Block cur_block = get_block();
     display_coods(&cur_block);
     int starting_x = rand()%(WIDTH - max_x_cood(&cur_block)) + -1*min_x_cood(&cur_block) ;
