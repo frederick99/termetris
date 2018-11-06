@@ -1,7 +1,11 @@
-#Termetris
+# Termetris
 
 + a Terminal based game of Tetris 
 
+## Dependencies
+
++ ncurses.h  
+  Ncurses may be installed on debian (-like) systems by running `apt install libncurses5-dev`
 
 ### Todo
 
